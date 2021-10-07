@@ -56,9 +56,9 @@ sd(ldt$Length)
 #Intervalo interquartil (IQR)
 IQR(ldt$Length)
 #Histograma 
-hist(ldt$Mean_RT, main = "Histogram of Mean Reaction Times", xlb = "reaction times, ms")
+hist(ldt$Mean_RT, main = "Histogram of Mean Reaction Times", xlab = "reaction times, ms")
 #Histograma com uma cor
-hist(ldt$Mean_RT, main = "Histogram of Mean Reaction Times", xlb = "reaction times, ms", col = lightblue)
+hist(ldt$Mean_RT, main = "Histogram of Mean Reaction Times", xlab = "reaction times, ms", col = lightblue)
 #Histograma com mais de uma cor
 hist(ldt$Mean_RT, main = "Histogram of Mean Reaction Times", xlab = "Reaction Times, ms", col = c("lightyellow1", "moccasin", "mistyrose2"))
 #Histograma com ggplot2
