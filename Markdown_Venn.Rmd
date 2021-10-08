@@ -1,0 +1,37 @@
+---
+title: "Como fazer um diagrama de Venn no R"
+author: "Karina Bertolino"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+## Instale e carregue os pacotes ```VennDiagram``` e ```ExtraGrid``` (se necessário, instale também o pacote ```Grid```)
+  
+### 1) Conjuntos não-disjuntos
+```{r Conjunto não disjunto, out.width="40%", fig.align = "center", tidy=TRUE, tidy.opts=list(width.cutoff=60), message=FALSE}
+library(VennDiagram)
+x <- draw.pairwise.venn(area1=50, area2=50, cross.area=25, fill = c("lightblue","lightpink"), cat.pos = c(0, 0), lty="blank" , category = c("label", "label"))
+```
+
+### 2) Conjuntos disjuntos
+```{r Conjunto disjunto, out.width="40%", fig.align = "center", tidy=TRUE, tidy.opts=list(width.cutoff=60), message=FALSE}
+library(VennDiagram)
+x <- draw.pairwise.venn(area1=50, area2=50, cross.area=0, fill = c("lightblue","lightpink"), cat.pos = c(0, 0), lty="blank" , category = c("label", "label"))
+```
+
+## Insira o título
+```{r Title, out.width="40%", fig.align = "center", tidy=TRUE, tidy.opts=list(width.cutoff=60), message=FALSE}
+library(gridExtra)
+grid.arrange(gTree(children=x), top= "title")
+```
+
+### Argumentos
+- ```area```: valor de cada conjunto
+- ```cross.area```: valor da intersecção
+- ```fill```: cores dos conjuntos (<http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf>)
+- ```cat.pos```: posição da legenda em graus, de 0 à 360
+- ```lty```: cor da linha dos conjuntos
+- ```category```: nome de cada conjunto
+- ```gTree(children)```: nome do vetor que você criou
+- ```top```: título
