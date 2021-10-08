@@ -16,8 +16,8 @@ grid.arrange(gTree(children=x), top= "title")
 ###lty: cor da linha dos conjuntos
 ###category: nome de cada conjunto
 ###gTree(children): nome do vetor que você criou
-top: título
-#Example
+###top: título
+#Examplo
 #Para conjuntos não disjuntos
 x <- draw.pairwise.venn(area1=60, area2=35, cross.area=5, fill = c("azure3","antiquewhite1"), cat.pos = c(0, 0), lty="blank", category = c("Dog person", "Cat person"))
 #Para conjuntos disjuntos
