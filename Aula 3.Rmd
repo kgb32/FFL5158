@@ -8,11 +8,12 @@ output:
     highlightStyle: github
     highlightLines: yes
     countIncrementalSlides: no
-  lib_dir: default
 subtitle: 'FFL5158 - Estudos Experimentais: Metodologia e Análise'
 ---
-```{r setup, include = FALSE}
-library(htmltools)
+```{r, global_options, include=FALSE}
+    library(knitr)
+    library(formatR)
+    library(htmltools)
 ```
 
 # <span style="color:blue">Conteúdo<text</span>
@@ -171,7 +172,7 @@ class: left, middle
 ***Exemplo***
 O conjunto de dados "The last words in verses" contém uma amostra de versos tiradas do "Corpus of Russian Poetry". 
 
-```{r message=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=30)}
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60), message=FALSE}
 df <- read.csv("https://raw.githubusercontent.com/LingData2019/LingData/master/data/poetry_last_in_lines.csv",sep="\t",encoding = "UTF-8")
 ```
 ---
