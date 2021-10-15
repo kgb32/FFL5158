@@ -1,0 +1,15 @@
+---
+title: 'FLL5158 - Estudos Experimentais: Metodologia e Análise'
+subtitle: Lista 2
+date: 'prazo: 21/10/2021'
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+1. A Pesquisa sobre a Comunidade Americana" (The American Community Survey) ocorre todos os anos. Em 2010, estimaram que, entre americanos, (i) 14.6% vivem abaixo da linha da pobreza; (ii) 20.7% falam uma língua estrangeira em casa e (iii) 4.2% pertencem a ambas categorias. Considerando esses dados, responda:
+
+a. Viver abaixo da linha da pobreza e falar uma língua estrangeira em casa são eventos disjuntos ou não disjuntos? Justifique.
+b. Desenhe um diagrama de Venn no R indicando a relação entre as  variáveis. Ver <(https://edisciplinas.usp.br/pluginfile.php/6650493/mod_resource/content/1/Diagrama%20de%20Venn%20no%20R.pdf>)
+c. 
+

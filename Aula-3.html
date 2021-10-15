@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Associação e Correlação</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Karina Bertolino e Elaine Grolla" />
+    <link href="Aula-3_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="Aula-3_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Associação e Correlação
+## FFL5158 - Estudos Experimentais: Metodologia e Análise
+### Karina Bertolino e Elaine Grolla
+### 14/10/2021
+
+---
+
+
+
+# &lt;span style="color:blue"&gt;Conteúdo&lt;text&lt;/span&gt;
+
+- Avisos 
+- Lista 1
+- Recap
+- Teste de hipótese
+- Associação vs. Correlação
+- Associação entre variáveis qualitativas
+- Correlação
+---
+class: left, middle
+# &lt;span style="color:blue"&gt;Avisos&lt;text&lt;/span&gt;
+
+- Lista 2 está disponível no Moodle
+- Data de entrega: &lt;span style="color:green"&gt;21/10&lt;text&lt;/span&gt;
+- Exercício 1 pede para desenhar o Diagrama de Venn no R. Para isso, ver: [&lt;span style="color:blue"&gt;Como fazer um diagrama de Venn no R  &lt;text&lt;/span&gt;](https://edisciplinas.usp.br/pluginfile.php/6650493/mod_resource/content/1/Diagrama%20de%20Venn%20no%20R.pdf)
+---
+# &lt;span style="color:blue"&gt;Lista 1&lt;text&lt;/span&gt;
+1. Dada a seguinte sequência numérica, crie um vetor e calcule a média, a mediana e o desvio padrão desses números usando o R.
+  10.4, 5.6, 3.1, 6.4, 6.4, 21.7
+
+```r
+x &lt;- c(10.4, 5.6, 3.1, 6.4, 6.4, 21.7)
+mean(x)
+```
+
+```
+## [1] 8.933333
+```
+
+```r
+median(x)
+```
+
+```
+## [1] 6.4
+```
+
+```r
+sd(x)
+```
+
+```
+## [1] 6.68002
+```
+---
+# &lt;span style="color:blue"&gt;Lista 1&lt;text&lt;/span&gt;
+.pull-left[2.O conjunto de dados ```warlpiri``` do pacote ```languageR``` contém informações sobre o uso do caso ergativo em Warlpiri de Lajamanu. Os dados foram obtidos através de uma tarefa de elicitação. A pergunta de pesquisa era se o uso do caso ergativo está associado à animacidade do sujeito, ordem de palavras e idade dos falantes (adultos vs. crianças).]
+.pull-right[Explore esse conjunto de dados da seguinte maneira: primeiro construa uma tabela de contingência usando a função ```xtabs()``` e depois um gráfico de mosaico. Por qual razão optamos pelo gráfico de mosaico ao invés do gráfico de barras?]
+
+**Tabela de contingência**
+
+```r
+library(languageR)
+data("warlpiri")
+warlpiri.xtabs &lt;- xtabs(~CaseMarking + AnimacyOfSubject + WordOrder +
+    AgeGroup, data = warlpiri)
+```
+---
+**Gráfico de Mosaico**
+
+```r
+mosaicplot(warlpiri.xtabs, xlab = "CaseMarking", ylab = "AgeGroup",
+    main = "Case Marking and Age Group", col = c("lightblue",
+        "lightpink"))
+```
+
+&lt;img src="Aula-3_files/figure-html/unnamed-chunk-3-1.png" width="50%" /&gt;
+---
+class: left, middle
+###&lt;span style="color:red"&gt;O que se conclui (Exercício 2)?&lt;text&lt;/span&gt;
+- Há uma assimetria entre a frequência da marcação do caso ergativo em crianças e adultos. 
+Por exemplo, em sentenças com sujeito inicial, adultos usam mais o caso ergativo para marcar sujeitos animados do que crianças, enquanto crianças utilizam outros casos nesse mesmo contexto. 
+- O gráfico de mosaico é utilizado no lugar do gráfico de barra quando temos mais de uma variável independente.
+---
+#&lt;span style="color:blue"&gt;Exercício 3&lt;text&lt;/span&gt;
+.pull-left[3.O conjunto de dados ```ratings``` do pacote ```languageR``` contém classificações de 81 palavras para plantas e animais. Explorando esse conjunto de dados, realize as seguintes tarefas:
+- extraia as colunas dos dados utilizando a função ```colnames()```;] 
+.pull-right[
+- concentrando-se na variável ```Length```, que indica o número de letras de cada palavra, responda se ela é  discreta ou contínua;
+- baseando-se na sua resposta anterior, decida se seria mais adequado um histograma ou um gráfico de barras para representar a distribuição dessa variável, e construa esse gráfico utilizando a cor vermelha; 
+- qual é a amplitude da variável ```Length```?]
+---
+###&lt;span style="color:red"&gt;Extrair colunas&lt;text&lt;/span&gt;
+
+```r
+data(ratings)
+colnames(ratings)
+```
+
+ [1] "Word"             "Frequency"        "FamilySize"       "SynsetCount"     
+ [5] "Length"           "Class"            "FreqSingular"     "FreqPlural"      
+ [9] "DerivEntropy"     "Complex"          "rInfl"            "meanWeightRating"
+[13] "meanSizeRating"   "meanFamiliarity" 
+###&lt;span style="color:red"&gt;Discreta ou contínua&lt;text&lt;/span&gt;
+Discreta, pois a variável é definida pelo número de letras por palavra.
+###&lt;span style="color:red"&gt;Gráfico de barras&lt;text&lt;/span&gt;
+
+```r
+barplot(xtabs(~ratings$Length), xlab = "word length", ylim = c(0,
+    20), col = "red", main = "Word Length Frequency")
+```
+---
+![](Aula-3_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+---
+###&lt;span style="color:red"&gt;Amplitude&lt;text&lt;/span&gt;
+
+
+```r
+range(ratings$Length)
+```
+
+```
+## [1]  3 10
+```
+---
+#&lt;span style="color:blue"&gt;Exercício 4&lt;text&lt;/span&gt;
+
+4. O gráfico de pizza abaixo contém a porcentagem de línguas estrangeiras faladas em casa nos EUA. Esse gráfico não permite a visualização imediata dos dados. Por quê? Que tipo de gráfico melhor transmitiria as mesmas informações?
+
+Há muitas variáveis de baixo valor condensadas no gráfico. Não é possível verificar de imediato e com clareza qual pedaço da pizza corresponde à determinada língua. Como se trata de uma variável discreta (número de línguas estrangeiras faladas em casa nos EUA), o gráfico de barras pode ser utilizado para transmitir a mesma informação, mas com a vantagem de que cada variável seria localizada rapidamente. 
+---
+#&lt;span style="color:blue"&gt;Recap&lt;text&lt;/span&gt;
+
+###&lt;span style="color:red"&gt;Probabilidade na Binomial&lt;text&lt;/span&gt;
+
+```r
+dbinom(x,n,p) #probabilidade de um valor x
+pbinom(x,n,p) #a proporção de valores menores do que x
+1 - pbinom (x,n,p) #a proporção de valores maiores ou iguais a x
+rbinom(k,n,p) #gerador de números aleatórios
+```
+---
+class: left, middle
+#&lt;span style="color:blue"&gt;Teste de hipótese&lt;text&lt;/span&gt;
+
+É um conjetura sobre um parâmetro da distribuição de probabilidade ou de uma variável.
+- Ex: A probabilidade de uma criança recusar violações do princípio B é uma conjectura sobre o parâmetro p.
+- Ex: A variável aceitabilidade de violações do princípio B é dependente da variável idade.
+---
+class: left, middle
+#&lt;span style="color:blue"&gt;Teste de hipótese&lt;text&lt;/span&gt;
+
+Procedimento ou regra de decisão que nos permite decidir por H0 ou H1, com base na informação contida na amostra.
+ Ex:
+- H0: a probabilidade de que uma criança recuse violações do Princípio B é p.
+- H1: a probabilidade de que uma criança recuse violações do princípio B não é p. 
+---
+class: left, middle
+#&lt;span style="color:blue"&gt;Teste de hipótese&lt;text&lt;/span&gt;
+ Ex:
+- H0: idade e violações do princípio B não estão associadas.
+- H1: idade e violações do princípio B estão associadas.
+---
+#&lt;span style="color:blue"&gt;Teste de hipótese&lt;text&lt;/span&gt;
+
+####Testando Parâmetros
+ "A probabilidade de algo ocorrer é mesmo p?"
+
+- H0 = é
+- H1 = não é
+
+###Testando Independência
+"X e Y são dependentes?"
+- H0 = não
+- H1 = são
+---
+#&lt;span style="color:blue"&gt;Teste de hipótese&lt;text&lt;/span&gt;
+
+#### Região crítica (CV)
+ Conjunto de valores assumidos pela variável aleatória para os quais a hipótese nula é rejeitável
+ 
+ Ex: 
+ Rejeitar H0 se x for maior que 62.5 e/ou menor que 57.5 
+- CV ={X &lt; 57.5 e X &gt; 62.5} rejeitar
+- CV = {X &gt; 57.5 e X &lt; 62.5} aceitar 
+
+---
+#&lt;span style="color:blue"&gt;Recap&lt;text&lt;/span&gt;
+
+###&lt;span style="color:red"&gt;Teste de hipótese&lt;text&lt;/span&gt;
+
+- ***Erro tipo I***: rejeitar H0 quando de fato H0 é verdadeira.
+- ***Erro tipo II***: não rejeitar H0 quando H0 é falso. 
+
+- ***Evitar erro tipo I***: escolher um critério de decisão que torna o erro pouco provável. Normalmente, α = 0.05 como a probabilidade de cometer erro do tipo 1 (em ciências humanas). 
+
+- ***Evitar erro tipo II***: calcular o tamanho da amostra que reduza a probabilidade do erro, usualmente representado por β. 
+---
+class: left, middle
+#&lt;span style="color:blue"&gt;Teste de hipótese&lt;text&lt;/span&gt;
+
+***Exemplo***
+O conjunto de dados "The last words in verses" contém uma amostra de versos tiradas do "Corpus of Russian Poetry". 
+
+
+```r
+df &lt;- read.csv("https://raw.githubusercontent.com/LingData2019/LingData/master/data/poetry_last_in_lines.csv",
+    sep = "\t", encoding = "UTF-8")
+```
+---
+**&lt;span style="color:green"&gt;Sugira uma hipótese sobre a proporção de nomes entre as palavras no final de um verso&lt;/span&gt;**
+
+
+```r
+#UPoS é a classificação da última palavra de cada verso
+table(df$UPoS) 
+```
+
+```
+## 
+##  ADJ  ADP  ADV  DET INTJ NOUN  NUM PART PRON VERB    X 
+##   52    1   16    6    1  222    3    2    6   54    1
+```
+
+```r
+table(df$UPoS)/sum(table(df$UPoS))
+```
+
+```
+## 
+##         ADJ         ADP         ADV         DET        INTJ        NOUN 
+## 0.142857143 0.002747253 0.043956044 0.016483516 0.002747253 0.609890110 
+##         NUM        PART        PRON        VERB           X 
+## 0.008241758 0.005494505 0.016483516 0.148351648 0.002747253
+```
+Frequência de nomes = 0.6
+---
+**&lt;span style="color:green"&gt;Calcule n e x&lt;/span&gt;**
+
+```r
+nouns &lt;- df[df$UPoS=='NOUN',] #selecionar todos 'nouns
+total &lt;- nrow(df) #valor de n 
+nnouns &lt;- nrow(nouns) #número de sucesso x (='noun')
+```
+
+**&lt;span style="color:green"&gt;Teste binomial&lt;/span&gt;**
+
+```r
+# H0: p = 0.6
+# H1: p ≠ 0.6
+binom.test(nnouns, total, p = 0.6)
+```
+
+```
+## 
+## 	Exact binomial test
+## 
+## data:  nnouns and total
+## number of successes = 222, number of trials = 364, p-value = 0.7085
+## alternative hypothesis: true probability of success is not equal to 0.6
+## 95 percent confidence interval:
+##  0.5576786 0.6602988
+## sample estimates:
+## probability of success 
+##              0.6098901
+```
+---
+class: left, middle
+**&lt;span style="color:green"&gt;Rejeitar a hipótese nula ou não?&lt;/span&gt;**
+
+***&lt;span style="color:red"&gt;&lt;/big&gt;Não!!!&lt;/big&gt;&lt;/span&gt;***
+O p-valor é maior do que 0.05, portanto, não rejeitamos a hipótese nula.
+
+Agora suponha...
+
+Hipótese: frequência de nomes é 0.4
+
+
+```r
+# H0: p = 0.4
+# H1: p ≠ 0.4
+binom.test(nnouns, total, p = 0.4)
+```
+
+```
+## 
+## 	Exact binomial test
+## 
+## data:  nnouns and total
+## number of successes = 222, number of trials = 364, p-value = 9.059e-16
+## alternative hypothesis: true probability of success is not equal to 0.4
+## 95 percent confidence interval:
+##  0.5576786 0.6602988
+## sample estimates:
+## probability of success 
+##              0.6098901
+```
+---
+class: left, middle
+**&lt;span style="color:green"&gt;Rejeitar a hipótese nula ou não?&lt;/span&gt;**
+
+***&lt;span style="color:red"&gt;&lt;/big&gt;Sim!!!&lt;/big&gt;&lt;/span&gt;***
+O p-valor é menor (e muito!) do que 0.05, portanto, rejeitamos a hipótese nula em favor da hipótese alternativa.
+---
+class:left, middle
+#&lt;span style="color:blue"&gt;Recap&lt;text&lt;/span&gt;
+
+###&lt;span style="color:red"&gt;Probabilidade na Binomial&lt;text&lt;/span&gt;
+
+```r
+pnorm(x,m, sd) #probabilidade de um valor x
+pnorm(x,m,sd) #a proporção de valores menores do que x
+1 - pnorm (x,m,sd) #a proporção de valores maiores ou iguais a x
+rnorm(k,m, sd) #gerador de números aleatórios
+```
+---
+class: left, middle
+#&lt;span style="color:blue"&gt;Associação vs. Correlação&lt;text&lt;/span&gt;
+- Ambas explicam uma relação entre variáveis.
+- Associação é um termo mais generalizado, enquanto que a correlação é considerada um caso especial de associação de natureza linear. 
+- Correlação é a força da relação linear de duas variáveis (ex: quanto mais alto é um prédio, menos você consegue ver o que está embaixo);
+- Associação apenas define que há uma relação entre a variável dependente e independente, mas não releva o tipo de associação e a força dela. 
+---
+#&lt;span style="color:blue"&gt;Associação entre variáveis qualitativas&lt;text&lt;/span&gt;
+Dados: 285 verbos regulares e irregulares em holandês.
+- Aux: qual é o auxiliar correspondente.
+- VerbalSyntets: quantidade de synsets (conjunto de sinônimos que referem ao mesmo conceito lexicalizado) no WordNet do holandês (conjunto de dados lexical). 
+- Regularidade: irregular vs. regular
+
+```r
+library(languageR)
+data(auxiliaries)
+```
+---
+#&lt;span style="color:blue"&gt;Associação entre variáveis qualitativas&lt;text&lt;/span&gt;
+
+```r
+xt = xtabs(formula = ~Aux + Regularity, data = auxiliaries)
+mosaicplot(xt, col = c("lightgreen", "yellow"), main = "Auxiliaries and Regularity")
+```
+
+&lt;img src="Aula-3_files/figure-html/unnamed-chunk-16-1.png" width="50%" /&gt;
+---
+#&lt;span style="color:blue"&gt;Associação entre variáveis qualitativas&lt;text&lt;/span&gt;
+
+```r
+xt/sum(xt) #tabela de contingência com proporções
+```
+
+```
+##          Regularity
+## Aux        irregular    regular
+##   hebben  0.32982456 0.41403509
+##   zijn    0.04210526 0.01052632
+##   zijnheb 0.12631579 0.07719298
+```
+- **Hebben**: mais verbos regulares
+- **Zijn**: mais verbos irregulares
+- **Zijnheb**: mais verbos irregulares
+
+---
+#&lt;span style="color:blue"&gt;Associação entre variáveis qualitativas&lt;text&lt;/span&gt;
+
+###O uso de determinado auxiliar depende da regularidade do verbo?
+
+&lt;span style="color:green"&gt;Teste qui-quadrado&lt;text&lt;/span&gt;
+É um teste formal para testar a independência (falta de associação) entre variáveis
+
+```r
+#H0: não existe associação
+#H1: existe associação
+chisq.test(xt)
+```
+
+```
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  xt
+## X-squared = 11.493, df = 2, p-value = 0.003194
+```
+---
+#&lt;span style="color:blue"&gt;Associação entre variáveis qualitativas&lt;text&lt;/span&gt;
+
+**Há três auxiliares: todos eles estão associados com regularidade?**
+O teste qui-quadrado apenas determina que há alguma associação, mas não diz em quais das variáveis há essa associação. Será que todos os auxiliares são dependentes da regularidade do verbo ou não?
+
+
+```r
+#Análise post hoc baseada nos resíduos
+library(chisq.posthoc.test)
+chisq.posthoc.test(xt)
+```
+
+```
+##   Dimension     Value irregular   regular
+## 1    hebben Residuals -3.155974  3.155974
+## 2    hebben  p values  0.009598  0.009598
+## 3      zijn Residuals  2.401444 -2.401444
+## 4      zijn  p values  0.097983  0.097983
+## 5   zijnheb Residuals  2.089748 -2.089748
+## 6   zijnheb  p values  0.219843  0.219843
+```
+A associação apenas existe para o verbo "hebben"
+---
+#&lt;span style="color:blue"&gt;Associação entre variáveis qualitativas&lt;text&lt;/span&gt;
+Se, ao checarmos os resíduos, há valores esperados menores do que 5, o Teste Exato de Fisher produz valores-p mais precisos.
+
+
+```r
+chisq.test(xt)$expected
+```
+
+```
+##          Regularity
+## Aux        irregular    regular
+##   hebben  105.628070 106.371930
+##   zijn      7.473684   7.526316
+##   zijnheb  28.898246  29.101754
+```
+---
+#&lt;span style="color:blue"&gt;Associação entre variáveis qualitativas&lt;text&lt;/span&gt;
+
+Não é o caso, mas este é o código para o Teste Exato de Fisher:
+
+```r
+fisher.test(xt)
+```
+
+```
+## 
+## 	Fisher's Exact Test for Count Data
+## 
+## data:  xt
+## p-value = 0.002885
+## alternative hypothesis: two.sided
+```
+---
+#&lt;span style="color:blue"&gt;Correlação&lt;text&lt;/span&gt;
+Relação entre duas variáveis numéricas, em que elas aumentam ou diminuem em paralelo:
+- Se X aumenta em 1 unidade, haverá um acréscimo ou descréscimo de N unidades em Y. 
+- Se X diminue em 1 unidade, haverá um acréscimo ou descréscimo de N unidades em Y. 
+Os dados devem estar pareados: para cada valor de X deve haver um valor correspondente em Y. 
+---
+#&lt;span style="color:blue"&gt;Correlação&lt;text&lt;/span&gt;
+- ***Correlação positiva***: 
+se X aumenta Y também aumenta
+ Ex: Idade está positivamente correlacionada com vocabulário em crianças. Quanto mais velhas elas ficam, mais palavras elas sabem.
+- ***Correlação negativa***: 
+se X aumenta Y diminui. 
+ Ex: Zipf (1935) observou que a frequência de  palavra está negativamente correlacionada com tamanho de palavra: quanto mais frequente uma palavra é, mais curta ela tende a ser.
+---
+#&lt;span style="color:blue"&gt;Correlação&lt;text&lt;/span&gt;
+Quando estamos interessados na relação entre variáveis quantitativas, estamos interessados em três aspectos: 
+1. ***A direção da correlação***: positiva ou negativa?
+2. ***A força da correlação***: o quão forte é a relação entre duas variáveis
+3. Se a correlação é ***estatisticamente significante*** ou não.
+
+**As primeiras duas perguntas podem ser respondidas com o coeficiente de correlação, e a última com um teste de hipótese.**
+---
+#&lt;span style="color:blue"&gt;Correlação&lt;text&lt;/span&gt;
+
+##&lt;span style="color:red"&gt;Explorando a correlação com gráficos&lt;text&lt;/span&gt;
+
+- ***Dados***: Ldt. Decisão lexical, frequência e tamanho da palavra. 
+- ***Pergunta***: qual é a relação entre tamanho da palavra e a média do tempo de reação em uma tarefa de decisão lexical?
+- ***Hipótese***: palavras curtas vão ser reconhecidas mais rápido que palavras longas.
+
+---
+##&lt;span style="color:red"&gt;Explorando a correlação com gráficos&lt;text&lt;/span&gt;
+
+
+```r
+library(Rling)
+library(ggplot2)
+data(ldt)
+ggplot(ldt, aes(x=Length, y=Mean_RT)) + geom_point() + geom_smooth(method="lm")
+```
+---
+![](Aula-3_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+---
+##&lt;span style="color:red"&gt; Coeficiente de Pearson &lt;text&lt;/span&gt;
+- Apenas observando o gráfico vemos que há uma relação linear entre o tamanho da palavra e o tempo em que os sujeitos demoram para reconhecê-la. 
+- Para calcular a força dessa correlação, calculamos o coeficiente de Pearson.
+
+---
+###&lt;span style="color:green"&gt;Assunções&lt;text&lt;/span&gt;
+- A relação entre as variáveis é ***monotônica***: a cada aumento de X há um aumento paralelo de Y; em cada diminuição de X há uma diminuição paralela de Y
+- A relação entre as variáveis é ***linear***: cada aumento de 1 unidade de X irá levar a um aumento constante de N unidades de Y
+- Não há ***outliers*** nos dados.
+ 
+ **Se os dados falham em preencher essas assunções, o coeficiente não será robusto**
+---
+class: left, middle
+##&lt;span style="color:red"&gt; Coeficiente de Pearson &lt;text&lt;/span&gt;
+###&lt;span style="color:green"&gt;Assunções&lt;text&lt;/span&gt;
+- ***Se não há relação linear***: use Spearman's rho (próxima aula)
+- ***Outliers***: remova
+- ***Não monotônica***: não faz sentido buscar por correlação
+---
+##&lt;span style="color:red"&gt; Coeficiente de Pearson &lt;text&lt;/span&gt;
+###&lt;span style="color:green"&gt;Teste&lt;text&lt;/span&gt;
+
+```r
+cor(ldt$Length, ldt$Mean_RT)
+```
+
+```
+## [1] 0.6147456
+```
+A a correlação é ***moderada***
+
+**Valores podem ser negativos ou positivos**
+- 0: sem correlação
+- 0-0.3: correlação fraca
+- 0.3-0.7: correlação moderada
+- 0.7-1: correlação forte
+- 1: correlação perfeita
+---
+##&lt;span style="color:red"&gt; Teste de hipótese &lt;text&lt;/span&gt;
+Para testar se a correlação é significante, há seguintes ***assunções***:
+- A amostra é selecionada ***aleatoriamente***;
+- Ambas variáveis são ***contínuas ou discretas (ordinal não funciona)***;
+- O ***tamanho da amostra*** é maior do que 30, ou os valores de Y correspondentes a cada valor de x têm uma ***distribuição normal***;
+- A relação entre as variáveis é ***homocedástica***: cada variável deve ter a mesma variância.
+- Os valores de X e Y são completamente ***independentes***: não há auto-correlação.
+---
+##&lt;span style="color:red"&gt; Teste de hipótese &lt;text&lt;/span&gt;
+
+***Removendo Outliers***
+
+```r
+boxplot(ldt$Length, ldt$Mean_RT, names = c("Length", "Mean_RT"),
+    col = (c("lightpink", "lightgreen")))
+```
+
+&lt;img src="Aula-3_files/figure-html/unnamed-chunk-24-1.png" width="50%" /&gt;
+---
+class: left, middle
+
+```r
+#criar função que procura por valores menores do que +/- 2 sd da média
+#substituir os resultados dessa função pelo conjunto de dados original
+ldt &lt;- ldt[abs(scale(ldt$Mean_RT))&lt;2,]
+cor(ldt$Length, ldt$Mean_RT)
+```
+
+```
+## [1] 0.5723765
+```
+---
+##&lt;span style="color:red"&gt; Teste de hipótese &lt;text&lt;/span&gt;
+***Validando normalidade***
+
+```r
+#1000 é o número de testes que a função conduz antes de retornar um resultado
+#H0: dados têm uma distribuição normal
+library(energy)
+mvnorm.etest(ldt[,c("Length", "Mean_RT")], 1000)
+```
+
+```
+## 
+## 	Energy test of multivariate normality: estimated parameters
+## 
+## data:  x, sample size 96, dimension 2, replicates 1000
+## E-statistic = 0.47346, p-value = 0.898
+```
+---
+##&lt;span style="color:red"&gt; Teste de hipótese &lt;text&lt;/span&gt;
+***Validando Homocedasticidade***
+
+```r
+# Se p &gt; 0.05, as variáveis são Homocedasticas
+mod &lt;- lm(Mean_RT ~ Length, data=ldt)
+library(car)
+```
+
+```
+## Loading required package: carData
+```
+
+```r
+ncvTest(mod)
+```
+
+```
+## Non-constant Variance Score Test 
+## Variance formula: ~ fitted.values 
+## Chisquare = 0.4630842, Df = 1, p = 0.49619
+```
+---
+##&lt;span style="color:red"&gt; Teste de hipótese &lt;text&lt;/span&gt;
+***Validando Independência***
+
+```r
+# se p&lt;0.05, há violação de independência
+library(car)
+durbinWatsonTest(mod)
+```
+
+```
+##  lag Autocorrelation D-W Statistic p-value
+##    1      0.02480565      1.937535   0.804
+##  Alternative hypothesis: rho != 0
+```
+---
+class: left, middle
+##&lt;span style="color:red"&gt; Teste de hipótese &lt;text&lt;/span&gt;
+
+```r
+# greater se a correlação é positiva
+cor.test(ldt$Length, ldt$Mean_RT, alternative="greater")
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  ldt$Length and ldt$Mean_RT
+## t = 6.7676, df = 94, p-value = 5.555e-10
+## alternative hypothesis: true correlation is greater than 0
+## 95 percent confidence interval:
+##  0.4466334 1.0000000
+## sample estimates:
+##       cor 
+## 0.5723765
+```
+---
+class: left, middle
+##&lt;span style="color:red"&gt; Teste de hipótese &lt;text&lt;/span&gt;
+Os resultados nos dizem:
+- ***p &lt; 0.05***: a hipótese nula pode ser rejeitada, ou seja, podemos aceitar que há correlação
+- ***r = 0.57***: correlação moderadamente positiva
+- ***95% confidence interval: 0.45 - 1***: a correlação na população é de moderadamente forte a muito forte
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

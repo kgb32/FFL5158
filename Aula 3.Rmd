@@ -8,6 +8,19 @@ output:
     highlightStyle: github
     highlightLines: yes
     countIncrementalSlides: no
+pages:
+  stage: deploy
+  script:
+  - Rscript -e "rmarkdown::render('Aula 3.Rmd', output_file = 'index.html')"
+  - mkdir public
+  - cp index.html xaringan-themer.css public/
+  - cp -r index_files/ fig/ public/
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+  interruptible: true
 subtitle: 'FFL5158 - Estudos Experimentais: Metodologia e Análise'
 ---
 ```{r, global_options, include=FALSE}
