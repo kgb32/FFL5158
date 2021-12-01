@@ -1,0 +1,173 @@
+---
+title: "Teste de estatística: FLL5158"
+output: learnr::tutorial
+allow_skip: true
+fig_caption: yes
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(error = TRUE)
+tutorial_options(exercise.eval = TRUE)
+```
+
+## Gênero e média de palavras diárias
+
+Um experimento hipotético verificou se o número de palavras faladas por mulheres e homens difere. A variável idade também foi considerada. Os vetores abaixo contém os dados transformados em uma tabela nomeada `wordss`:
+
+```{r message = FALSE, echo = TRUE, tidy =TRUE, tidy.opts=list(width.cutoff=50), out.width="60%", fig.align='center'}
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(tidyr)
+library(formatR)
+library(magrittr)
+words.f <- c(17667, 15347, 14401, 5037, 20845, 11211, 6008, 17140, 13284, 10930) 
+words.m <- c(5599, 19776, 13961, 10144, 6107, 16776, 31955, 21140, 5482, 2152) 
+words <- c(words.f, words.m) 
+age <- c(24, 31, 28, 21, 29, 29, 25, 32, 30, 31, 33, 26, 22, 24, 23, 23, 20, 21, 29, 27)
+participants <- seq(1, 20, by = 1)
+wordsfm <- data.frame(participants, words.f, words.m, age)
+wordss <- wordsfm %>%
+pivot_longer(words.f:words.m, names_to = "gender", values_to = "words")
+wordss$gender <- as.factor(wordss$gender)
+levels(wordss$gender) <- c("F", "M")
+head(wordss)
+```
+
+Execute o código acima e tire as medidas estatísticas de acordo com o gênero. 
+
+```{r gender, exercise=TRUE, exercise.eval=TRUE}
+
+```
+
+```{r gender-hint}
+library(psych)
+describeBy()
+```
+
+
+```{r quiz, echo = FALSE}
+quiz(
+question("Qual é a diferença entre a média de palavras diárias  de homens e mulheres?",
+    answer("40.7"),
+    answer("389.5"),
+    answer("122.2", correct = TRUE),
+    answer("54.7")
+  ), 
+question("Observe o boxplot comparando a média do número de palavras de homens e mulheres. O que se pode dizer sobre a diferença entre os grupos?",
+  answer("Homens variam mais quanto ao número de palavras diárias do que mulheres.", correct = TRUE),
+  answer("A distribuição para mulheres é bastante assimétrica, enviesada para a esquerda."),
+  answer("Mulheres têm como primeiro quartil um valor aproximado de 5000."), 
+  answer("Homens têm como mediana (segundo quartil) um valor aproximado de 20000.")
+  )
+)
+```
+
+```{r, message = FALSE, echo = FALSE}
+ggplot(wordss, aes(x = gender, y = words, group = gender)) + geom_boxplot(fill = c("plum1", "lightsteelblue2"), colour = "#1F3552", alpha = 0.5, width = .5) + scale_y_continuous(name = "Mean words") + scale_x_discrete(name = "gender") + ggtitle("Mean words per day according to gender") + stat_boxplot(geom ='errorbar', width = 0.3)
+```
+
+Para medir a relação entre um conjunto de duas variáveis contínuas, usamos a correlação. Supondo que os dados satisfazem as assunções do teste de Pearson, encontre a correlação entre a média de palavras diárias e a idade.
+
+```{r wordss, exercise=TRUE, exercise.eval=TRUE}
+
+```
+
+```{r wordss-hint}
+cor()
+```
+
+
+```{r corr, echo = FALSE}
+quiz(
+question("As pessoas falam menos conforme elas envelhecem? Quão forte é essa correlação?",
+    answer("Sim, a correlação é positiva e modesta."),
+    answer("Sim, a correlação é positiva e forte."),
+    answer("Sim, a correlação é negativa e fraca."),
+    answer("Não há correlação", correct = TRUE)
+    ), 
+question("Considere o gráfico abaixo sobre a correlação entre idade e média de palavras por dia. O que você conclui?",
+    answer("A falta de correlação é causada pelo número excessivo de pessoas de até vinte anos"),
+    answer("Há uma tendência de que a média de palavras não inclua uma faixa etária exclusiva", correct = TRUE),
+    answer("Há duas pessoas com uma média de palavras por dia que ultrapassa 30000. Ambas têm por volta de 30 anos."),
+    answer("Entre os dois indivíduos mais velhos, há uma diferença de 25000 palavras diárias.")
+    )
+)
+```
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(viridis)
+wordss%>%ggplot(aes(x= words,y = age,color=words, size = age))+
+geom_point(alpha =0.5)+geom_smooth(method ="lm",colour ="black",se =FALSE)+
+labs(y ="Age",x ="Mean words per day",title ="Mean words per day according to age")+
+theme(plot.title =element_text(size =17L,hjust =0.5))+scale_color_viridis(option ="cividis")
+```
+
+```{r hip, echo = FALSE}
+quiz(
+question("Qual teste de hipótese paramétrico você conduziria para testar a hipótese de que homens falam, em média, mais palavras do que mulheres por dia?",
+    answer("ANOVA de medidas repetidas"),
+    answer("Teste de correlação de Pearson"),
+    answer("Teste-t não pareado", correct = TRUE),
+    answer("Teste de Kruskal-Wallis")
+    )
+)
+```
+
+## Crianças bilingues
+
+O conjunto de dados `bilingual` contém dados de crianças bilingues que falam uma segunda língua
+apenas em casa ou também na escola. Considerando a hipótese de que crianças bilingues com o MLU maior são aquelas que falam uma segunda língua tanto na escola como em casa.
+
+```{r,echo = TRUE, warning = FALSE, message = FALSE}
+load("~/Desktop/Everything R/recem.RData")
+bilingual
+```
+
+```{r recem, echo = FALSE}
+quiz(
+question("Considerando os dados e a hipótese, qual teste paramétrico você conduziria?",
+    answer("One-way anova, unilateral"),
+    answer("Qui-quadrado, bilateral"),
+    answer("Teste de wilcoxon, bilateral"),
+    answer("teste-t não-pareado, unilateral", correct = TRUE)
+    ),
+question("Ao conduzir o teste de Shapiro, qual p-valor você obtém?",
+    answer("p = 0.0035 para home.only e 0.5681 para school"),
+    answer("p = 0.3832 para home.only e 0.3107 para school", correct = TRUE),
+    answer("p = 0.528 para home.only e 0.002 para school"),
+    answer("p = 0.027 para home.only e 0.035 para school")
+    )
+)
+```
+
+```{r recem1, exercise=TRUE, exercise.eval=TRUE}
+
+```
+
+```{r recem1-hint}
+install.packages("RVAideMemoire")
+library(RVAideMemoire)
+byf.shapiro(x~y, data = data)
+```
+
+```{r recem2, echo = FALSE}
+quiz(
+question("Conduza o teste para a hipótese mencionada acima, considerando os seus resultados no teste de normalidade. Qual o p-valor obtido no seu teste?",
+    answer("0.03344", correct = TRUE),
+    answer("0.05079"),
+    answer("0.06687"),
+    answer("0.9666")
+    )
+)
+```
+
+```{r recem3, exercise=TRUE, exercise.eval=TRUE}
+
+```
+
+```{r recem3-hint}
+#home.only é o primeiro nível do fator.
+```
